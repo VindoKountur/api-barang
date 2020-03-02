@@ -13,6 +13,10 @@ app.use(express.json());
 
 app.use("/api/barang", barang);
 
+app.get("/", (req, res) => {
+  res.send('Ini hanya server untuk rest api, akses = /api/barang');
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(
