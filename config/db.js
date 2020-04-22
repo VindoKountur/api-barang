@@ -6,6 +6,8 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
+    // LOCALHOST
+    // const conn = await mongoose.connect('mongodb://localhost/warong', {useNewUrlParser: true, useUnifiedTopology: true});
     console.log(`MongoDB connected host : ${conn.connection.host}`);
   } catch (err) {
     console.log(`Error connecting : ${err.message}`);

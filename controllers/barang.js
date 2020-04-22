@@ -1,11 +1,11 @@
-const Barang = require('../models/Barang');
+const Models = require('../models/');
 
 // @desc  Get all barang
 // @route GET /api/barang
 
-exports.getSemuaBarang = async (req, res, next) => {
+async function getSemuaBarang (req, res, next) {
   try {
-    const semuaBarang = await Barang.find();
+    const semuaBarang = await Models.Barang.find();
 
     return res.status(200).json({
       success : true,
@@ -20,14 +20,41 @@ exports.getSemuaBarang = async (req, res, next) => {
   }
 };
 
+// @desc  Get 1 barang
+// @route GET /api/barang/:id
+async function getSatuBarang(req, res, next) {
+  try {
+    const idBarang = req.params.id;
+    const barang = await Models.Barang.findById(idBarang);
+
+    if (!barang) {
+      return res.status(404).json({
+        success : false,
+        error : 'Data tidak ditemukan'
+      });
+    }
+
+    return res.status(201).json({
+      success: true,
+      data: barang
+    })
+  } catch (err) {
+    return res.status(500).json({
+      success : false,
+      error : 'Server error',
+      message: err
+    })
+  }
+}
+
 // @desc  Add barang
 // @route POST /api/barang
 
-exports.addBarang = async (req, res, next) => {
+async function addBarang (req, res, next) {
   try {
-    const { id, nama, harga } = req.body;
+    const { nama, harga, barcode } = req.body;
 
-    const barang = await Barang.create(req.body);
+    const barang = await Models.Barang.create(req.body);
 
     return res.status(201).json({
       success : true,
@@ -47,16 +74,36 @@ exports.addBarang = async (req, res, next) => {
       error : 'Server error, idk'
     });
   }
-  
 };
+
+// @desc Update barang
+// @route /api/barang/:id
+
+async function updateBarang (req, res, next) {
+  try {
+    const idBarang = req.params.id;
+    const barang = await Models.Barang.updateOne({_id : idBarang}, {}).set(req.body);
+
+    return res.status(201).json({
+      success : true,
+      data : barang
+    }); 
+  } catch (err) {
+    return res.status(404).json({
+      success : false,
+      error : 'Update gagal',
+      message: err
+    });
+  }
+}
+
 // @desc  Delete barang
 // @route /api/barang/:id
 
-exports.deleteBarang = async (req, res, next) => {
+async function deleteBarang (req, res, next) {
   try {
-    const barang = await Barang.findById(req.params.id);
-
-    console.log(barang);
+    const idBarang = req.params.id;
+    const barang = await Models.Barang.findById(idBarang);
 
     if (!barang) {
       return res.status(404).json({
@@ -79,3 +126,12 @@ exports.deleteBarang = async (req, res, next) => {
     });
   }
 };
+
+
+module.exports = {
+  getSemuaBarang,
+  getSatuBarang,
+  addBarang,
+  updateBarang,
+  deleteBarang
+}

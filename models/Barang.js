@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
 const BarangSchema = new mongoose.Schema({
-  id : {
-    type : String,
-    required : [true, 'ID wajib dimasukkan']
-  },
   nama : {
     type : String,
     required : [true, 'Nama barang harus ada']
@@ -12,7 +8,13 @@ const BarangSchema = new mongoose.Schema({
   harga : {
     type : Number,
     required : [true, 'Harga barang harus ada']
+  },
+  barcode: {
+    type: String,
+    required: true,
   }
 });
 
-module.exports = mongoose.model('Barang', BarangSchema);
+const Barang = mongoose.model('Barang', BarangSchema);
+
+module.exports = Barang;

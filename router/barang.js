@@ -1,19 +1,17 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  getSemuaBarang,
-  addBarang,
-  deleteBarang
-} = require("../controllers/barang");
+const controllers = require('../controllers');
 
 router
   .route("/")
-  .get(getSemuaBarang)
-  .post(addBarang);
+  .get(controllers.barang.getSemuaBarang)
+  .post(controllers.barang.addBarang);
 
 router
   .route("/:id")
-  .delete(deleteBarang);
+  .get(controllers.barang.getSatuBarang)
+  .patch(controllers.barang.updateBarang)
+  .delete(controllers.barang.deleteBarang);
 
 module.exports = router;
