@@ -10,9 +10,10 @@ async function getSemuaBarang(req, res, next) {
     const like = {
       nama: new RegExp(search, 'i'),
     };
-    const semuaBarang = await Models.Barang.find(like ? like : null).limit(
-      limit ? limit : 50
-    );
+    const semuaBarang = await Models.Barang.find(like ? like : null)
+      .limit(limit ? limit : null)
+      .sort('-_id');
+
     return res.status(200).json({
       success: true,
       count: semuaBarang.length,
